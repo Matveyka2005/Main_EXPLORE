@@ -12,6 +12,7 @@ from board.service import *
 from board.models import *
 
 
+'''Регистрация пользователя'''
 class RegisterUser(CreateView):
     form_class = RegisterUserForm
     template_name = "users/register_user.html"
@@ -41,11 +42,13 @@ class LoginUser(AccessMixin, LoginView):
         return context
 
 
+'''Выход из аккаунта'''
 def logout_user(request):
     logout(request)
     return redirect("main")
 
 
+'''Представление профиля пользователя'''
 class UserProfile(UpdateView):
     model = User
     form_class = UserUpdateForm
@@ -64,8 +67,10 @@ class UserProfile(UpdateView):
     
 def user_products(request):
     user_products = UserProfileUploads.objects.filter(user=request.user)
+    rubrics = Rubric.objects.all()
     data = {
         "user": request.user,
+        "rubrics": rubrics,
         "user_products": user_products,
     }
     
@@ -81,6 +86,7 @@ class UserPasswordChange(PasswordChangeView):
         return super().form_valid(form)
 
 
+'''Сброс пароля'''
 class AUserPasswordChange(UserPasswordChange):
     template_name = "users/pas_ch.html"
     success_url = reverse_lazy("password_done")

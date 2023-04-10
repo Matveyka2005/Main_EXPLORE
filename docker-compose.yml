@@ -1,0 +1,40 @@
+
+version: "3.10.6"
+
+
+services:
+
+  market_proj:
+    build:
+      context: ./site_folder
+    ports:
+      - "5000:8000"
+      
+    depends_on:
+      - db
+
+    command: ["python3", "./board_site/manage.py", "runserver", "0.0.0.0:8000"]
+
+  db:
+    image: postgres:15.2-alpine
+    restart: always
+    container_name: my_postgres
+    # ports:
+    #   - "5432:5432"
+    volumes: 
+      - postgres_data:/var/lib/postgresql15/data/
+
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    expose:
+      - 5432
+
+volumes:
+  static_volume: {}
+  postgres_data: {}
+
+
+  # db:
+  #   driver: local.

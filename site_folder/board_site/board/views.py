@@ -1,6 +1,7 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseNotFound
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, ListView, DetailView, UpdateView, DeleteView
+from django.shortcuts import render
 
 from board.forms import BbForm
 from board.models import *
@@ -76,8 +77,14 @@ class ByRubricListView(ListView):
     template_name = "board/main.html"
 
     def get_queryset(self):
-        return Bb.objects.select_related('rubric').filter(rubric=self.kwargs['rubric_id'])
-
+        try:
+            obj = Bb.objects.select_related('rubric').filter(rubric=self.kwargs['rubric_id'])
+        except Exception as e:
+            print(e)
+            return Http404()
+        else:
+            return obj
+        
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['rubrics'] = get_all_objects(Rubric)
@@ -85,7 +92,7 @@ class ByRubricListView(ListView):
         try:
             current_rubric = Rubric.objects.get(pk=self.kwargs['rubric_id'])
         except Exception:
-            raise Http404("Рубрики не чуществует")
+            raise HttpResponseNotFound()
 
         context['current_rubric'] = current_rubric
         return context
@@ -117,5 +124,6 @@ class DeleteUploadView(DeleteView):
         return context 
 
 
-
+def page_Not_Found(request, exeption):
+    return render(request, 'board/errors/error404.html')
 
