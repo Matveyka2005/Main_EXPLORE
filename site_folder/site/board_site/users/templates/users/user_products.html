@@ -1,0 +1,41 @@
+{% extends 'layout/basic.html' %}
+
+
+{% block content%}
+
+<div class="something">
+    {% for i in user_products %}
+        <div class="about">
+            {% if i.product.photo %}
+                <img src="{{ i.product.photo.url }}" alt=" Sorry...Image cannot load...">
+                <h2>{{i.product.title}}</h2><br>
+                <h2>Цена: ${{i.product.price}}</h2>
+                <h4>Описание:</h4>
+                <div class="contentic">
+                <p>{{i.product.content}}</p>
+        </div>
+
+            {% else %}
+
+                <h2>{{i.product.title}}</h2><br>
+                <h2>Цена: ${{i.product.price}}</h2>
+                <h4>Описание:</h4>
+                <div class="contentic">
+                    <p>
+                        {{i.product.content}}
+                    </p>
+                </div>
+
+            {% endif %}
+    <br>
+
+    <button type="submit">
+        <a href="{{i.product.get_absolute_url}}">Change</a>
+    </button>
+
+    {% endfor %}
+
+
+
+</div>
+{% endblock %}

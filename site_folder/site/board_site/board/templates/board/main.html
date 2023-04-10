@@ -1,0 +1,45 @@
+{% extends 'layout/basic.html' %}
+
+{% block content %}
+<div class="some-content">
+    {% for bb in bbs %}
+    <div class="content-container">
+        <div class="content-name">
+            <h2>{{bb.title}}</h2>
+           </div>
+            <div class="content">
+            {% if bb.photo %}
+              <img src="{{ bb.photo.url }}" alt=" Sorry...Image cannot load..."><br>
+              <h1>${{ bb.price }}</h1><br>
+             <h4>{{ bb.content |truncatewords:10 }}</h4>
+             <h6>{{ bb.published }}</h6>
+            {% else %}
+
+              <h1>${{ bb.price }}</h1><br>
+             <h4>{{ bb.content |truncatewords:10 }}</h4>
+             <h6>{{ bb.published }}</h6>
+            {% endif %}
+            <div class="content-footer">
+                <a href="{{ bb.get_absolute_url }}">
+                     <input type="submit" value="Подробнее">
+                </a>
+            </div>
+        </div>
+
+           </div>
+    {% endfor %}
+{% endblock %}
+    {% block paginator %}
+        <div class="paginator">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            {% endif %}
+            {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            {% if page_obj.has_next %}
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+            {% endif %}
+        </div>
+    {% endblock %}
+</div>

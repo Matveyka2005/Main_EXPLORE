@@ -1,0 +1,23 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %}Создать объявдение{% endblock %}
+
+
+
+{% block content %}
+
+{% if not request.user.is_authenticated %}
+    <h1>Для получения этой возможности нужна автризация</h1>
+{% else %}
+
+    <h1>Добавление объявлений</h1>
+
+    
+      <form method="post" enctype="multipart/form-data" name="fun_form">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Добавить</button>
+      </form>
+
+{% endif %}
+{% endblock %}

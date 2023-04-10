@@ -1,0 +1,42 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+
+{% if not request.user.is_authenticated %}
+    <h1>Для того что бы просмотреть профиль нужно войти</h1><br>
+    <h3><a href="{% url 'login' %}">Войти</a></h3> | <h3><a href="{% url 'register' %}">Регистрация</a></h3>
+
+{% else %}
+
+<div class="profile-container">
+    <div class="about-user">
+        <h4>Имя пользователя:</h4>
+        <h1>-----{{request.user.username}}-----</h1>
+    </div>
+    <style>
+
+    </style>
+    <div id="user_products_href">
+        <a href="{% url 'user_created_products' %}" tyle="text-decoration: none; color: red;">Мои объявления</a>
+    </div>
+
+    <br>
+    <h1>Редактировать данные</h1>
+    <form class="form_prof_new" method="post">
+        {% csrf_token %}
+        {% for f in form  %}
+        <div><p><label for="{{f.id.for_label}}">{{ f.label }}</label>{{ f }}</p></div>
+        <div>{{ f.errors }} </div>
+        {% endfor %}
+        <input type="submit" value="Редактировть">
+        <br>
+        <h5><a href="{% url 'change_password' %}">Изменить пароль</a></h5>
+    </form>
+
+
+<br>
+</div>
+{% endif %}
+{% endblock %}
