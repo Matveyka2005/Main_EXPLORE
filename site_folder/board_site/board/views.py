@@ -92,7 +92,7 @@ class ByRubricListView(ListView):
         try:
             current_rubric = Rubric.objects.get(pk=self.kwargs['rubric_id'])
         except Exception:
-            raise HttpResponseNotFound()
+            raise Http404
 
         context['current_rubric'] = current_rubric
         return context
@@ -124,6 +124,5 @@ class DeleteUploadView(DeleteView):
         return context 
 
 
-def page_Not_Found(request, exeption):
-    return render(request, 'board/errors/error404.html')
+
 
